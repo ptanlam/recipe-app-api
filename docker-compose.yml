@@ -2,11 +2,25 @@ version: "3.0"
 
 services:
   recipe-app:
-    build: 
+    build:
       context: .
     ports:
       - "8000:8000"
-    volumes: 
+    volumes:
       - "./app:/app"
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=recipe-app
+      - DB_USER=posgres
+      - DB_PASS=Admin@123
+    depends_on:
+      - db
+
+  db:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_DB=recipe-app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Admin@123
